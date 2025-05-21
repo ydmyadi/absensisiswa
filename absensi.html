@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Absensi Siswa SDN 2 Kutanagara</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 60%;
+            text-align: center;
+            transform: translateY(-50px);
+            animation: slideUp 1s ease-out forwards;
+        }
+
+        h1 {
+            color: #4CAF50;
+            font-size: 36px;
+            margin-bottom: 20px;
+            animation: bounce 1.5s infinite alternate;
+        }
+
+        @keyframes bounce {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .form-group {
+            margin: 15px 0;
+            text-align: left;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .form-group input[type="text"],
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group select:focus {
+            border-color: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .form-group button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-group button:hover {
+            background-color: #45a049;
+        }
+
+        .table-container {
+            margin-top: 30px;
+            width: 100%;
+            overflow-x: auto;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            opacity: 0;
+            animation: fadeInTable 1s 0.5s forwards;
+        }
+
+        @keyframes fadeInTable {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+
+        table th, table td {
+            padding: 12px;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+
+        table th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .status {
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .present {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .absent {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .late {
+            background-color: #ff9800;
+            color: white;
+        }
+
+        .alfa {
+            background-color: #f44336;
+            color: white;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+
+        .alasan-container {
+            display: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Gambar Logo Sekolah dari Google Drive -->
+        <img src="https://drive.google.com/uc?export=view&id=185FvcDV45ydHkQJ6lNjhwnidcw71WFXP" alt="Logo Sekolah" class="logo">
+
+        <h1>Absensi Siswa SDN 2 Kutanagara</h1>
+
+        <form id="absensiForm">
+            <div class="form-group">
+                <label for="namaSiswa">Nama Siswa:</label>
+                <input type="text" id="namaSiswa" required>
+            </div>
+
+            <div class="form-group">
+                <label for="status">Status Kehadiran:</label>
+                <select id="status" required>
+                    <option value="present">Hadir</option>
+                    <option value="absent">Izin</option>
+                    <option value="late">Alfa</option>
+                </select>
+            </div>
+
+            <div class="form-group alasan-container" id="alasanContainer">
+                <label for="alasan">Alasan:</label>
+                <input type="text" id="alasan" placeholder="Masukkan alasan" />
+            </div>
+
+            <div class="form-group">
+                <button type="submit">Tambah Absensi</button>
+            </div>
+        </form>
+
+        <div class="table-container">
+            <table id="absensiTable">
+                <thead>
+                    <tr>
+                        <th>Nama Siswa</th>
+                        <th>Tanggal</th>
+                        <th>Status Kehadiran</th>
+                        <th>Alasan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data Absensi Akan Muncul Di Sini -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const absensiForm = document.getElementById("absensiForm");
+        const absensiTable = document.getElementById("absensiTable").getElementsByTagName("tbody")[0];
+        const statusSelect = document.getElementById("status");
+        const alasanContainer = document.getElementById("alasanContainer");
+
+        statusSelect.addEventListener("change", function() {
+            if (statusSelect.value === "absent" || statusSelect.value === "late") {
+                alasanContainer.style.display = "block";
+            } else {
+                alasanContainer.style.display = "none";
+            }
+        });
+
+        absensiForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const namaSiswa = document.getElementById("namaSiswa").value;
+            const status = document.getElementById("status").value;
+            const alasan = status === "present" ? "" : document.getElementById("alasan").value;
+            
+            // Menyimpan tanggal dan waktu saat ini
+            const tanggal = new Date().toLocaleString();
+
+            // Menentukan status dalam Bahasa Indonesia
+            let statusIndo = "";
+            if (status === "present") {
+                statusIndo = "Hadir";
+            } else if (status === "absent") {
+                statusIndo = "Izin";
+            } else if (status === "late") {
+                statusIndo = "Alfa";
+            }
+
+            const row = absensiTable.insertRow();
+
+            const cell1 = row.insertCell(0);
+            const cell2 = row.insertCell(1);
+            const cell3 = row.insertCell(2);
+            const cell4 = row.insertCell(3);
+
+            cell1.textContent = namaSiswa;
+            cell2.textContent = tanggal;
+            cell3.textContent = statusIndo;
+            cell4.textContent = alasan;
+
+            const statusCell = cell3;
+            statusCell.classList.add('status');
+
+            if (status === "present") {
+                statusCell.classList.add("present");
+            } else if (status === "absent") {
+                statusCell.classList.add("absent");
+            } else if (status === "late") {
+                statusCell.classList.add("late");
+            }
+
+            absensiForm.reset();
+            alasanContainer.style.display = "none";
+        });
+    </script>
+
+</body>
+</html>
